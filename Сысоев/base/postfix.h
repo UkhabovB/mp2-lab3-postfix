@@ -3,22 +3,55 @@
 
 #include <string>
 #include "stack.h"
-
+#include <fstream>
+#include <vector>
+#include <math.h>
 using namespace std;
+
+const int SIZE_OF_TABLE = 11;  
 
 class TPostfix
 {
-  string infix;
-  string postfix;
+	
+	struct SOperation
+	{
+		string operation;
+		int quanity_arguments;
+		int priority;
+	};
+
+  enum StatusPostfix{converted , not_converted};
+
+
+  StatusPostfix status ;                       // статус поле tpostfix
+  SOperation table[SIZE_OF_TABLE];             // таблицa
+  vector<string> infix;
+  vector<string> postfix;
+
+
+  vector<string> ToPostfix();                  // метод переводит из инфиксной формы в постфиксную
+  void splitString(string );
+  void createTable();
+  int searchInTable(string)  ;                 //поиск элемента по таблице
+
+
 public:
-  TPostfix()
+
+  TPostfix(string str);
+  string getInfix() const 
   {
-    infix = "a + b";
+	  string inf;
+	  for(unsigned int i = 0; i < infix.size(); i++)
+		  inf += infix[i];
+	  return inf;
   }
-  string GetInfix() { return infix; }
-  string GetPostfix() { return postfix; }
-  string ToPostfix();
-  double Calculate(); // Ввод переменных, вычисление по постфиксной форме
+  string getPostfix();
+  double Calculate();                         // Ввод переменных, вычисление по постфиксной форме
+
 };
+
+bool isNumber(string str);
+
+
 
 #endif
